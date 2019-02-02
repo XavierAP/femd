@@ -243,7 +243,6 @@ mixin template common(T)
 	}
 	
 	/// Addition and subtraction operators.
-	/// Can't accept rvalues.
 	T opBinary(string op, T2)(const ref T2 rhs) const
 		if( (op == "+" || op == "-") && areSizesEqual!(T2, T) )
 	{
@@ -252,7 +251,6 @@ mixin template common(T)
 		return ans;
 	}
 	/// Assignment addition and subtraction operators.
-	/// Can't accept rvalues.
 	void opOpAssign(string op, T2)(const ref T2 rhs)
 		if( (op == "+" || op == "-") && areSizesEqual!(T2, T) )
 	{
@@ -261,7 +259,6 @@ mixin template common(T)
 	}
 	
 	/// Matrix or Vector multiplication.
-	/// Can't accept rvalues.
 	auto opBinary(string op, T2)(const ref T2 rhs) const
 		if(op == "*")
 	{
@@ -344,6 +341,13 @@ mixin template common(T)
 		}
 		return ans;
 	}
+	
+	/// Matrix or Vector operators.
+	/// Overload for rvalue arguments.
+	auto opBinary(string op, T2)(const T2 rhs) const
+	{
+		return opBinary!(op, T2)(rhs);
+	}
 }
 
 
@@ -358,7 +362,7 @@ unittest
 	assert( v0 == Vector!2.zeros + v0 );
 	assert( m0 == Matrix!(2,1).zeros + m0 );
 
-	scalar a = 2;
+	scalar a = 8;
 	auto v1 = v0;
 	v1[] *= a;
 	assert( v1 == a * v0 );
@@ -366,9 +370,9 @@ unittest
 	assert( v1 == v0 );
 
 	auto m1 = Matrix!(1,2)( 0, -3 );
-	assert( v0 + m0 - m1 == typeof(v0)(
-		v0[0] + m0[0,0] - m1[0,0] ,
-		v0[1] + m0[1,0] - m1[0,1] ) );
+	assert( v0 + a * m0 - m1 == typeof(v0)(
+		v0[0] + a * m0[0,0] - m1[0,0] ,
+		v0[1] + a * m0[1,0] - m1[0,1] ) );
 
 	v1 = v0;
 	v1 += m0;
