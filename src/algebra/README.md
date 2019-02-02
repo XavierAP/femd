@@ -24,3 +24,11 @@ no garbage collector.
 	+ Specifying every element.
 	+ Static factory methods, e.g. `zeros()`.
 	+ Default constructors: uninitialized, start filled with garbage.
+
+
+## [**scalar**](/src/algebra/scalar.d) module
+Controls the scalar type that tensor types are based on.
+By default it's `real` (increased precision);
+changing to `double` is shown as example.
+Equally this alias could be used to restrict the library to integer types,
+or extend it to complex, for example.
