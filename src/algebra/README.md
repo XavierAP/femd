@@ -1,4 +1,5 @@
 # algebra package
+
 ## [**statics**](/src/algebra/statics.d) module
 This module provides a simple implementation of Matrices and Vectors
 intended for lightweight use
@@ -14,7 +15,9 @@ this is checked at compile time.
 indexing,
 addition,
 subtraction,
-multiplication.
+multiplication,
+scalar pre-multiplication
+and scalar assignment operators.
 + Stack allocation,
 no garbage collector.
 + Matrices and Vectors may be constructed in one of three ways:
