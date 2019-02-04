@@ -243,7 +243,7 @@ mixin template common(T)
 	}
 	
 	/// Addition and subtraction operators.
-	T opBinary(string op, T2)(const ref T2 rhs) const
+	T opBinary(string op, T2)(const auto ref T2 rhs) const
 		if( (op == "+" || op == "-") && areSizesEqual!(T2, T) )
 	{
 		T ans = this;
@@ -251,7 +251,7 @@ mixin template common(T)
 		return ans;
 	}
 	/// Assignment addition and subtraction operators.
-	void opOpAssign(string op, T2)(const ref T2 rhs)
+	void opOpAssign(string op, T2)(const auto ref T2 rhs)
 		if( (op == "+" || op == "-") && areSizesEqual!(T2, T) )
 	{
 		foreach(size_t k, ref elem; this.mem)
@@ -259,7 +259,7 @@ mixin template common(T)
 	}
 	
 	/// Matrix or Vector multiplication.
-	auto opBinary(string op, T2)(const ref T2 rhs) const
+	auto opBinary(string op, T2)(const auto ref T2 rhs) const
 		if(op == "*")
 	{
 		// 1. Compile-time check of dimensions and, in case T or T2 are Vectors, figure out whether to regard them as rows or columns.
@@ -340,13 +340,6 @@ mixin template common(T)
 			}
 		}
 		return ans;
-	}
-	
-	/// Matrix or Vector operators.
-	/// Overload for rvalue arguments.
-	auto opBinary(string op, T2)(const T2 rhs) const
-	{
-		return opBinary!(op, T2)(rhs);
 	}
 }
 
