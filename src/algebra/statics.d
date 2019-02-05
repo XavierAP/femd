@@ -14,6 +14,7 @@ module algebra.statics;
 pure:
 nothrow:
 
+public
 import algebra.scalar;
 
 /**
@@ -231,8 +232,8 @@ mixin template common(T)
 		mixin("mem[]" ~op~ "= value;");
 	}
 
-	/// Scalar pre-multiplication.
-	T opBinaryRight(string op)(scalar x) const
+	/// Scalar post-multiplication.
+	T opBinary(string op)(scalar x) const
 		if(op == "*")
 	{
 		T ans;
@@ -240,6 +241,12 @@ mixin template common(T)
 			ans.mem[k] = x * elem;
 		
 		return ans;
+	}
+	/// Scalar pre-multiplication.
+	T opBinaryRight(string op)(scalar x) const
+		if(op == "*")
+	{
+		return opBinary!op(x);
 	}
 	
 	/// Addition and subtraction operators.
