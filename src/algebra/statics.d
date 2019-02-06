@@ -366,6 +366,7 @@ unittest
 	auto v1 = v0;
 	v1[] *= a;
 	assert( v1 == a * v0 );
+	assert( v1 == v0 * a );
 	v1[] /= a;
 	assert( v1 == v0 );
 
