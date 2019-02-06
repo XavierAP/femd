@@ -38,16 +38,6 @@ struct Vector(size_t n)
 		default: return 0;
 		}
 	}
-	
-	/**
-	Constructor.
-	Params:
-	elems = Values to initialize the Vector.
-	*/
-	this(scalar[n] elems...)
-	{
-		mem = elems;
-	}
 
 	/// Indexed read.
 	scalar opIndex(size_t pos) const
@@ -111,7 +101,7 @@ unittest
 	
 	auto col = Matrix!(3,1)( 1, 2, 3 );
 	auto row = Matrix!(1,3)( 1, 2, 3 );
-	v = Vector!3( 1, 2, 3 );
+	v = [ 1, 2, 3 ]; // assignment from array
 	assert( v.toColMatrix == col );
 	assert( v.toRowMatrix == row );
 }
@@ -139,16 +129,6 @@ struct Matrix(size_t nr, size_t nc)
 		case 2: return nc;
 		default: return 0;
 		}
-	}
-	
-	/**
-	Constructor.
-	Params:
-	elems = Values to initialize the Matrix, ordered by row and by column.
-	*/
-	this(scalar[nr*nc] elems...)
-	{
-		mem = elems;
 	}
 
 	/// Indexed read.
@@ -179,7 +159,7 @@ struct Matrix(size_t nr, size_t nc)
 	auto toVector()() const
 		if(nr == 1 || nc == 1)
 	{
-		return copyTo!(Vector!(nr*nc));
+		return copyTo!(Vector!(mem.length));
 	}
 
 private:
@@ -193,7 +173,7 @@ unittest
 	assert( m.length(1) == 3 );
 	assert( m.length(2) == 2 );
 	assert( m.order == 2 );
-
+	
 	scalar a = 2;
 	m[0,0] = a;
 	assert( a == m[0,0] );
@@ -251,6 +231,18 @@ private:
 /// Operators and methods common to Vectors and Matrices.
 mixin template common(T)
 {
+	/// Constructor with initialization.
+	this(scalar[mem.length] elems...)
+	{
+		opAssign(elems);
+	}
+	/// Assignment operator.
+	void opAssign(scalar[mem.length] elems)
+	{
+		mem = elems;
+	}
+	
+	
 	/// Factory method.
 	static T zeros()
 	{
