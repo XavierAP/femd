@@ -70,6 +70,19 @@ struct Vector(size_t n)
 		return mixin("mem[pos]" ~op~ "= value");
 	}
 	
+
+	/// Converts a Vector into a column Matrix.
+	auto toColMatrix() const
+	{
+		return copyTo!(Matrix!(n,1));
+	}
+	/// Converts a Vector into a row Matrix.
+	auto toRowMatrix() const
+	{
+		return copyTo!(Matrix!(1,n));
+	}
+
+	
 	mixin common!(Vector!n); // Operators and methods common to Vectors and Matrices.
 
 private:
@@ -95,6 +108,12 @@ unittest
 	v[0] += a;
 	a += a;
 	assert( a == v[0] );
+	
+	auto col = Matrix!(3,1)( 1, 2, 3 );
+	auto row = Matrix!(1,3)( 1, 2, 3 );
+	v = Vector!3( 1, 2, 3 );
+	assert( v.toColMatrix == col );
+	assert( v.toRowMatrix == row );
 }
 
 
@@ -155,6 +174,14 @@ struct Matrix(size_t nr, size_t nc)
 	
 	mixin common!(Matrix!(nr,nc)); // Operators and methods common to Vectors and Matrices.
 
+	
+	/// Converts a row or column Matrix into a Vector.
+	auto toVector()() const
+		if(nr == 1 || nc == 1)
+	{
+		return copyTo!(Vector!(nr*nc));
+	}
+
 private:
 	scalar[nc*nr] mem = void; /// Data storage.
 	
@@ -179,6 +206,12 @@ unittest
 	m[0,0] += a;
 	a += a;
 	assert( a == m[0,0] );
+
+	auto col = Matrix!(3,1)( 1, 2, 3 );
+	auto row = Matrix!(1,3)( 1, 2, 3 );
+	auto v = Vector!3( 1, 2, 3 );
+	assert( v == col.toVector );
+	assert( v == row.toVector );
 }
 
 
@@ -346,6 +379,22 @@ mixin template common(T)
 				ans[r,c] = elem;
 			}
 		}
+		return ans;
+	}
+	
+
+	private void copyFrom(T2)(const auto ref T2 rhs)
+	{
+		enum n = this.mem.length;
+		static assert(n == rhs.mem.length);
+
+		foreach(size_t k; 0 .. n)
+			this.mem[k] = rhs.mem[k];
+	}
+	private T2 copyTo(T2)() const
+	{
+		T2 ans;
+		ans.copyFrom(this);
 		return ans;
 	}
 }
