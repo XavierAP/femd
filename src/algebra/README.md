@@ -16,12 +16,14 @@ indexing,
 addition,
 subtraction,
 multiplication,
-scalar pre-multiplication
+scalar multiplication
 and scalar assignment operators.
 + Stack allocation,
 no garbage collector.
-+ Matrices and Vectors may be constructed in one of three ways:
++ Matrices and Vectors may be constructed in one of these ways:
 	+ Specifying every element.
+	+ From another object of the same type,
+	or from an array with the exact same number of elements.
 	+ Static factory methods, e.g. `zeros()`.
 	+ Default constructors: uninitialized, start filled with garbage.
 
