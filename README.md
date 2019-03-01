@@ -7,6 +7,7 @@ The original idea was to create a FEM library in D,
 as a learning exercise in both.
 In particular I take advantage of D's attractive features
 in generic programming, constraints, compile-time evaluation, meta-programming, etc.
+and language support for unit tests.
 
 As a design choice, the [**femd package**](/src/femd/) requires linear algebra types,
 but treats them in a fully generic, duck-typed way.
