@@ -374,6 +374,19 @@ mixin template common(T)
 		return ans;
 	}
 	
+	/// Infinity norm.
+	scalar normInf() const
+	{
+		import std.math: abs;
+		scalar ans = 0;
+		foreach(elem; this.mem)
+		{
+			scalar ea = abs(elem);
+			if(ea > ans) ans = ea;
+		}
+		assert( ans >= 0 );
+		return ans;
+	}
 
 	private void copyFrom(T2)(const auto ref T2 rhs)
 	{
