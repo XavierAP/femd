@@ -18,5 +18,5 @@ a minimum [**algebra**](/src/algebra/) package has been written,
 and the unit tests, and only they, depend on it.
 
 The [**matlab**](/matlab/) folder contains the Matlab implementations
-from the book,
-used to generate test benchmarks.
+copied from the book *The Finite Element Method: Theory, Implementation, and Applications* by Larson and Bengzon.
+These implemenations are used to generate test benchmarks for the D re-implementations.
